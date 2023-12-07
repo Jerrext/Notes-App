@@ -12,4 +12,4 @@ const getNotesListRequest = () => {
 //   return apiAxios.post('/notes', data);
 // };
 
-export { getNotesListRequest };
+export default { getNotesListRequest };

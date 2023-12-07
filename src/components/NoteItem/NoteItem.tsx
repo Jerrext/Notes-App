@@ -34,7 +34,7 @@ const NoteItem: FC<NoteItemProps> = ({ id, title, description }) => {
   const onDeleteBtnClick = () => {};
 
   return (
-    <Paper elevation={3}>
+    <Paper elevation={3} style={{ width: '100%' }}>
       <Grid container>
         <Grid item xs={12} sm={9}>
           <Typography style={{ padding: '20px' }}>{title}</Typography>

@@ -2,15 +2,18 @@ import { NotesActionType, NotesActionTypes, NotesState } from '../types/notesTyp
 
 const initialState: NotesState = {
   notesList: [],
+  isLoading: false,
 };
 
 export const notesReducer = (
   state = initialState,
-  { type, payload }: any,
+  { type, payload }: NotesActionType,
 ): NotesState => {
   switch (type) {
-    case NotesActionTypes.GET_NOTES_LIST:
-      return state;
+    case NotesActionTypes.SET_IS_LOADING:
+      return { ...state, isLoading: payload };
+    case NotesActionTypes.SET_NOTES_LIST:
+      return { ...state, notesList: payload };
     default:
       return state;
   }

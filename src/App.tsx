@@ -1,33 +1,29 @@
-import React, { useState, ChangeEvent } from 'react';
-import './App.scss';
-import { Grid, Container, Typography, Button, Paper } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import SearchIcon from '@material-ui/icons/Search';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import './App.css';
+import {
+  Grid,
+  Container,
+  Typography,
+  Paper,
+  CircularProgress,
+  Box,
+} from '@material-ui/core';
 import { ButtonTypes, InputTypes } from './utils/@globalTypes';
 import Field from './components/Field';
 import ButtonComponent from './components/ButtonComponent';
 import SelectComponent from './components/SelectComponent';
 import NoteItem from './components/NoteItem';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    // flexGrow: 1,
-    backgroundColor: '#000000',
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-}));
+import { useTypedSelector } from './utils/hooks';
+import { NotesSelectors } from './redux/selectors/selectors';
+import { getNotesList } from './redux/actions/notesActions';
+import EmptyState from './components/EmptyState';
 
 const App = () => {
-  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const isLoading = useTypedSelector(NotesSelectors.getIsLoading);
+  const notesList = useTypedSelector(NotesSelectors.getNotesList);
 
   const [searchValue, setSearchValue] = useState('');
   const [tags, setTags] = useState<string[]>([]);
@@ -49,29 +45,26 @@ const App = () => {
     'Kelly Snyder',
   ];
 
-  const notes = [
-    { id: 1, title: 'title', description: 'description' },
-    {
-      id: 2,
-      title:
-        'title title title titletitle title titletitletitle title title title title title titletitle title titletitletitle title title title title title titletitle title titletitletitle title title title title title titletitle title titletitletitle title title title title title titletitle title titletitletitle title title',
-      description: 'description',
-    },
-    { id: 3, title: 'title', description: 'description' },
-    { id: 4, title: 'title', description: 'description' },
-    { id: 5, title: 'title', description: 'description' },
-    { id: 6, title: 'title', description: 'description' },
-  ];
+  useEffect(() => {
+    dispatch(getNotesList());
+  }, []);
 
   return (
     <>
-      <Container fixed>
+      <Container
+        fixed
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+          padding: '30px 0',
+        }}>
         <Grid
           container
           justifyContent="space-between"
           alignItems="center"
           spacing={2}
-          style={{ padding: '30px 0' }}>
+          style={{ marginBottom: '30px' }}>
           <Grid item>
             <Typography variant="h3" component="h1">
               Заметки
@@ -138,19 +131,33 @@ const App = () => {
             marginTop: '20px',
             display: 'flex',
             flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
             gap: '20px',
             padding: '20px',
+            flex: '1',
           }}>
-          {notes.map((note) => {
-            return (
-              <NoteItem
-                key={note.id}
-                id={note.id}
-                title={note.title}
-                description={note.description}
+          {!isLoading ? (
+            notesList.length > 0 ? (
+              notesList.map((note) => {
+                return (
+                  <NoteItem
+                    key={note.id}
+                    id={note.id}
+                    title={note.title}
+                    description={note.description}
+                  />
+                );
+              })
+            ) : (
+              <EmptyState
+                title="Список заметок пуст"
+                description="Создайте новую заметку"
               />
-            );
-          })}
+            )
+          ) : (
+            <CircularProgress />
+          )}
         </Paper>
       </Container>
     </>
