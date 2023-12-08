@@ -14,6 +14,8 @@ export const notesReducer = (
       return { ...state, isLoading: payload };
     case NotesActionTypes.SET_NOTES_LIST:
       return { ...state, notesList: payload };
+    case NotesActionTypes.ADD_NOTE:
+      return { ...state, notesList: [...state.notesList, payload] };
     default:
       return state;
   }

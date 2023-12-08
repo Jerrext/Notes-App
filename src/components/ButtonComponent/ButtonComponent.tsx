@@ -1,6 +1,6 @@
 import React, { FC, ChangeEvent, ReactNode } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import { ButtonTypes, InputTypes } from 'src/utils/@globalTypes';
+import { ButtonTypes } from 'src/utils/@globalTypes';
 
 type ButtonComponentProps = {
   onClick: () => void;

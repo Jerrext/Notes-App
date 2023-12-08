@@ -1,5 +1,9 @@
 import {
+  AddNoteActionType,
+  CreateNoteActionType,
+  CreateNotePayloadData,
   GetNotesListActionType,
+  NoteType,
   NotesActionTypes,
   NotesListType,
   SetIsLoadingActionType,
@@ -17,5 +21,15 @@ export const setIsLoading = (payload: boolean): SetIsLoadingActionType => ({
 
 export const setNotesList = (payload: NotesListType): SetNotesListActionType => ({
   type: NotesActionTypes.SET_NOTES_LIST,
+  payload,
+});
+
+export const createNote = (payload: CreateNotePayloadData): CreateNoteActionType => ({
+  type: NotesActionTypes.CREATE_NOTE,
+  payload,
+});
+
+export const addNote = (payload: NoteType): AddNoteActionType => ({
+  type: NotesActionTypes.ADD_NOTE,
   payload,
 });

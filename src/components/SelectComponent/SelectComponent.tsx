@@ -1,9 +1,6 @@
 import React, { FC, ChangeEvent } from 'react';
 import {
-  Button,
-  Input,
   Select,
-  TextField,
   MenuItem,
   Checkbox,
   ListItemText,
@@ -11,7 +8,6 @@ import {
   FormControl,
   InputLabel,
 } from '@material-ui/core';
-import { ButtonTypes, InputTypes } from 'src/utils/@globalTypes';
 
 type SelectComponentProps = {
   id: string;
