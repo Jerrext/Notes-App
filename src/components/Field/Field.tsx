@@ -1,6 +1,7 @@
 import React, { FC, ChangeEvent } from 'react';
 import { TextField, Select, Input } from '@material-ui/core';
 import { TagsListType } from 'src/redux/types/notesTypes';
+import { FIND_TAGS_REG } from 'src/utils/constants';
 
 type FieldProps = {
   value: string;
@@ -24,7 +25,7 @@ const Field: FC<FieldProps> = ({
     onChange(e.target.value);
 
     if (setTags) {
-      const tags = currentValue.match(/#[А-ЯЁа-яёA-Za-z]+/g);
+      const tags = currentValue.match(FIND_TAGS_REG);
       const formattedTags = [...new Set(tags)].map((tag, index) => ({
         id: index + tag + Math.random(),
         title: tag.slice(1),

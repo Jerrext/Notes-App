@@ -1,11 +1,21 @@
-import { Paper, Typography, Divider, Chip, Box, Grid } from '@material-ui/core';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
+import reactStringReplace from 'react-string-replace';
+import {
+  Paper,
+  Typography,
+  Divider,
+  Chip,
+  Box,
+  Grid,
+  TextField,
+} from '@material-ui/core';
 import ButtonComponent from '../ButtonComponent';
 import { ButtonTypes } from 'src/utils/@globalTypes';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
 import { TagsListType } from 'src/redux/types/notesTypes';
+import { FIND_TAGS_REG, TEST_TAG_REG } from 'src/utils/constants';
 
 type NoteItemProps = {
   id: number;
@@ -20,11 +30,40 @@ const NoteItem: FC<NoteItemProps> = ({ id, title, tagsList }) => {
 
   const onDeleteBtnClick = () => {};
 
+  const formattedTitle = useMemo(() => {
+    const formattedText = title.split(/\s?#/g).join(' #');
+    const textArray = formattedText.split(' ');
+    return textArray
+      ? textArray.map((str, index) =>
+          TEST_TAG_REG.test(str) ? (
+            <React.Fragment key={index + Math.random()}>
+              {' '}
+              <span
+                style={{
+                  color: 'red',
+                  backgroundColor: false ? 'rgba(217, 49, 30, 0.12)' : '',
+                  padding: '2px',
+                  borderRadius: '3px',
+                }}>
+                {str}
+              </span>
+            </React.Fragment>
+          ) : (
+            ` ${str}`
+          ),
+        )
+      : [];
+  }, [title]);
+
+  useEffect(() => {
+    // console.log(formattedTitle);
+  }, [formattedTitle]);
+
   return (
     <Paper elevation={3} style={{ width: '100%' }}>
       <Grid container>
         <Grid item xs={12} sm={9}>
-          <Typography style={{ padding: '20px' }}>{title}</Typography>
+          <Typography style={{ padding: '20px' }}>{formattedTitle}</Typography>
         </Grid>
         <Grid
           container
