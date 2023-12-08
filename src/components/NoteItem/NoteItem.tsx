@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import reactStringReplace from 'react-string-replace';
 import {
@@ -15,28 +15,32 @@ import { ButtonTypes } from 'src/utils/@globalTypes';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
-import { TagsListType } from 'src/redux/types/notesTypes';
-import { FIND_TAGS_REG, TEST_TAG_REG } from 'src/utils/constants';
-import { deleteNote } from 'src/redux/actions/notesActions';
+import { NoteType, TagsListType } from 'src/redux/types/notesTypes';
+import { TEST_TAG_REG } from 'src/utils/constants';
+import { deleteNote, setCurrentNote } from 'src/redux/actions/notesActions';
+import ModalWindow from '../ModalWindow';
 
 type NoteItemProps = {
-  id: number;
-  title: string;
-  tagsList: TagsListType;
+  noteData: NoteType;
+  setIsOpenWindow: (value: boolean) => void;
 };
 
-const NoteItem: FC<NoteItemProps> = ({ id, title, tagsList }) => {
+const NoteItem: FC<NoteItemProps> = ({ noteData, setIsOpenWindow }) => {
   const dispatch = useDispatch();
-  const onInfoBtnClick = () => {};
 
-  const onEditBtnClick = () => {};
+  // const [isOpen, setIsOpen] = useState(false);
+
+  const onEditBtnClick = () => {
+    setIsOpenWindow(true);
+    dispatch(setCurrentNote(noteData));
+  };
 
   const onDeleteBtnClick = () => {
-    dispatch(deleteNote(id));
+    dispatch(deleteNote(noteData.id));
   };
 
   const formattedTitle = useMemo(() => {
-    const formattedText = title.split(/\s?#/g).join(' #');
+    const formattedText = noteData.title.split(/\s?#/g).join(' #');
     const textArray = formattedText.split(' ');
     return textArray
       ? textArray.map((str, index) =>
@@ -58,7 +62,7 @@ const NoteItem: FC<NoteItemProps> = ({ id, title, tagsList }) => {
           ),
         )
       : [];
-  }, [title]);
+  }, [noteData]);
 
   useEffect(() => {
     // console.log(formattedTitle);
@@ -67,24 +71,17 @@ const NoteItem: FC<NoteItemProps> = ({ id, title, tagsList }) => {
   return (
     <Paper elevation={3} style={{ width: '100%' }}>
       <Grid container>
-        <Grid item xs={12} sm={9}>
+        <Grid item xs={12} sm={10}>
           <Typography style={{ padding: '20px' }}>{formattedTitle}</Typography>
         </Grid>
         <Grid
           container
           item
           xs={12}
-          sm={3}
+          sm={2}
           alignItems="center"
           justifyContent="space-around"
           style={{ flexWrap: 'wrap', padding: '10px 20px', gap: '10px' }}>
-          <Grid item>
-            <ButtonComponent
-              type={ButtonTypes.DEFAULT}
-              title={<InfoIcon />}
-              onClick={onInfoBtnClick}
-            />
-          </Grid>
           <Grid item>
             <ButtonComponent
               type={ButtonTypes.PRIMARY}
@@ -102,12 +99,12 @@ const NoteItem: FC<NoteItemProps> = ({ id, title, tagsList }) => {
         </Grid>
       </Grid>
 
-      {tagsList.length > 0 && (
+      {noteData.tags.length > 0 && (
         <>
           <Divider />
           <Box
             style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', padding: '20px' }}>
-            {tagsList.map((tag) => {
+            {noteData.tags.map((tag) => {
               return <Chip key={tag.id} label={tag.title} size="small" color="default" />;
             })}
           </Box>

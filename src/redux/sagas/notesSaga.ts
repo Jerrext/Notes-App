@@ -5,6 +5,7 @@ import {
   NoteType,
   NotesActionTypes,
   NotesListType,
+  UpdateNoteActionType,
 } from '../types/notesTypes';
 import axios, { AxiosResponse } from 'axios';
 import {
@@ -12,6 +13,7 @@ import {
   removeNoteFromList,
   setIsLoading,
   setNotesList,
+  updateNotesList,
 } from '../actions/notesActions';
 import API from '../api';
 
@@ -59,10 +61,29 @@ function* deleteNoteWorker(action: DeleteNoteActionType) {
   }
 }
 
+function* updateNoteWorker(action: UpdateNoteActionType) {
+  const { callback, data } = action.payload;
+  const { id, tags, title } = data;
+  const updateNoteData = { title, tags };
+
+  try {
+    yield put(setIsLoading(true));
+    yield call(API.updateNoteRequest, id, updateNoteData);
+    callback();
+    yield put(updateNotesList(data));
+    yield put(setIsLoading(false));
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.warn(error.message);
+    }
+  }
+}
+
 export default function* notesSaga() {
   yield all([
     takeLatest(NotesActionTypes.GET_NOTES_LIST, getNotesListWorker),
     takeLatest(NotesActionTypes.CREATE_NOTE, createNoteWorker),
     takeLatest(NotesActionTypes.DELETE_NOTE, deleteNoteWorker),
+    takeLatest(NotesActionTypes.UPDATE_NOTE, updateNoteWorker),
   ]);
 }

@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import './App.css';
-import {
-  Grid,
-  Container,
-  Typography,
-  Paper,
-  CircularProgress,
-  Box,
-} from '@material-ui/core';
-import { ButtonTypes, ModalWindowTypes } from './utils/@globalTypes';
+import { Grid, Container, Typography, Paper, CircularProgress } from '@material-ui/core';
+import { ButtonTypes } from './utils/@globalTypes';
 import Field from './components/Field';
 import ButtonComponent from './components/ButtonComponent';
 import SelectComponent from './components/SelectComponent';
 import NoteItem from './components/NoteItem';
 import { useTypedSelector } from './utils/hooks';
 import { NotesSelectors } from './redux/selectors/selectors';
-import { getNotesList } from './redux/actions/notesActions';
+import { getNotesList, setCurrentNote } from './redux/actions/notesActions';
 import EmptyState from './components/EmptyState';
 import ModalWindow from './components/ModalWindow';
 
@@ -25,15 +18,19 @@ const App = () => {
 
   const isLoading = useTypedSelector(NotesSelectors.getIsLoading);
   const notesList = useTypedSelector(NotesSelectors.getNotesList);
+  const currentNote = useTypedSelector(NotesSelectors.getCurrentNote);
 
   const [searchValue, setSearchValue] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
+  // const [current]
+
   const onSearchBtnClick = () => {};
 
   const onCreateNoteBtnClick = () => {
     setIsOpen(true);
+    dispatch(setCurrentNote(null));
   };
 
   const names = [
@@ -60,7 +57,7 @@ const App = () => {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        padding: '30px 0',
+        padding: '30px 10px',
       }}>
       <Grid
         container
@@ -79,11 +76,7 @@ const App = () => {
             type={ButtonTypes.PRIMARY}
             onClick={onCreateNoteBtnClick}
           />
-          <ModalWindow
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            modalWindowType={ModalWindowTypes.CREATE_NOTE}
-          />
+          <ModalWindow isOpen={isOpen} setIsOpen={setIsOpen} noteData={currentNote} />
         </Grid>
       </Grid>
       <Grid container spacing={2} alignItems="center">
@@ -124,12 +117,7 @@ const App = () => {
           notesList.length > 0 ? (
             notesList.map((note) => {
               return (
-                <NoteItem
-                  key={note.id}
-                  id={note.id}
-                  title={note.title}
-                  tagsList={note.tags}
-                />
+                <NoteItem key={note.id} noteData={note} setIsOpenWindow={setIsOpen} />
               );
             })
           ) : (

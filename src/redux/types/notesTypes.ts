@@ -7,6 +7,9 @@ export enum NotesActionTypes {
   ADD_NOTE_IN_LIST = 'ADD_NOTE_IN_LIST',
   DELETE_NOTE = 'DELETE_NOTE',
   REMOVE_NOTE_FROM_LIST = 'REMOVE_NOTE_FROM_LIST',
+  SET_CURRENT_NOTE = 'SET_CURRENT_NOTE',
+  UPDATE_NOTE = 'UPDATE_NOTE',
+  UPDATE_NOTES_LIST = 'UPDATE_NOTES_LIST',
 }
 
 export type PayloadWithCallback<Data> = {
@@ -36,13 +39,18 @@ export type CreateNoteData = {
   tags: TagsListType;
 };
 
+export type UpdateNoteData = CreateNoteData;
+
 export type CreateNotePayloadData = PayloadWithCallback<CreateNoteData>;
+
+export type UpdateNotePayloadData = PayloadWithCallback<NoteType>;
 
 //
 
 export type NotesState = {
   notesList: NotesListType;
   isLoading: boolean;
+  currentNote: NoteType | null;
 };
 
 //
@@ -81,10 +89,27 @@ export type RemoveNoteFromListActionType = {
   payload: number;
 };
 
+export type SetCurrentNoteActionType = {
+  type: NotesActionTypes.SET_CURRENT_NOTE;
+  payload: NoteType | null;
+};
+
+export type UpdateNoteActionType = {
+  type: NotesActionTypes.UPDATE_NOTE;
+  payload: UpdateNotePayloadData;
+};
+
+export type UpdateNotesListActionType = {
+  type: NotesActionTypes.UPDATE_NOTES_LIST;
+  payload: NoteType;
+};
+
 //
 
 export type NotesActionType =
   | SetIsLoadingActionType
   | SetNotesListActionType
   | AddNoteActionType
-  | RemoveNoteFromListActionType;
+  | RemoveNoteFromListActionType
+  | SetCurrentNoteActionType
+  | UpdateNotesListActionType;

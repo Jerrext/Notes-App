@@ -3,6 +3,7 @@ import { NotesActionType, NotesActionTypes, NotesState } from '../types/notesTyp
 const initialState: NotesState = {
   notesList: [],
   isLoading: false,
+  currentNote: null,
 };
 
 export const notesReducer = (
@@ -20,6 +21,15 @@ export const notesReducer = (
       return {
         ...state,
         notesList: state.notesList.filter((note) => note.id !== payload),
+      };
+    case NotesActionTypes.SET_CURRENT_NOTE:
+      return { ...state, currentNote: payload };
+    case NotesActionTypes.UPDATE_NOTES_LIST:
+      return {
+        ...state,
+        notesList: state.notesList.map((item) =>
+          item.id === payload.id ? payload : item,
+        ),
       };
     default:
       return state;

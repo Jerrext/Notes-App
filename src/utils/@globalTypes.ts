@@ -3,9 +3,3 @@ export enum ButtonTypes {
   PRIMARY = 'primary',
   SECONDARY = 'secondary',
 }
-
-export enum ModalWindowTypes {
-  CREATE_NOTE = 'createNote',
-  NOTE_INFO = 'noteInfo',
-  EDIT_NOTE = 'editNote',
-}

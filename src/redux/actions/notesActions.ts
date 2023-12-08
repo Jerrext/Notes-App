@@ -8,8 +8,12 @@ import {
   NotesActionTypes,
   NotesListType,
   RemoveNoteFromListActionType,
+  SetCurrentNoteActionType,
   SetIsLoadingActionType,
   SetNotesListActionType,
+  UpdateNoteActionType,
+  UpdateNotePayloadData,
+  UpdateNotesListActionType,
 } from '../types/notesTypes';
 
 export const getNotesList = (): GetNotesListActionType => ({
@@ -43,5 +47,20 @@ export const deleteNote = (payload: number): DeleteNoteActionType => ({
 
 export const removeNoteFromList = (payload: number): RemoveNoteFromListActionType => ({
   type: NotesActionTypes.REMOVE_NOTE_FROM_LIST,
+  payload,
+});
+
+export const setCurrentNote = (payload: NoteType | null): SetCurrentNoteActionType => ({
+  type: NotesActionTypes.SET_CURRENT_NOTE,
+  payload,
+});
+
+export const updateNote = (payload: UpdateNotePayloadData): UpdateNoteActionType => ({
+  type: NotesActionTypes.UPDATE_NOTE,
+  payload,
+});
+
+export const updateNotesList = (payload: NoteType): UpdateNotesListActionType => ({
+  type: NotesActionTypes.UPDATE_NOTES_LIST,
   payload,
 });

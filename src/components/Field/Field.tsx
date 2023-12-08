@@ -22,9 +22,11 @@ const Field: FC<FieldProps> = ({
 }) => {
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue = e.target.value;
-    onChange(e.target.value);
 
     if (setTags) {
+      const formattedValue = currentValue.replace(/\s?#/g, ' #');
+      onChange(formattedValue);
+
       const tags = currentValue.match(FIND_TAGS_REG);
       const formattedTags = [...new Set(tags)].map((tag, index) => ({
         id: index + tag + Math.random(),
@@ -32,6 +34,8 @@ const Field: FC<FieldProps> = ({
       }));
 
       setTags(formattedTags);
+    } else {
+      onChange(currentValue);
     }
   };
 
