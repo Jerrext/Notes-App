@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import reactStringReplace from 'react-string-replace';
 import {
   Paper,
@@ -16,6 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
 import { TagsListType } from 'src/redux/types/notesTypes';
 import { FIND_TAGS_REG, TEST_TAG_REG } from 'src/utils/constants';
+import { deleteNote } from 'src/redux/actions/notesActions';
 
 type NoteItemProps = {
   id: number;
@@ -24,11 +26,14 @@ type NoteItemProps = {
 };
 
 const NoteItem: FC<NoteItemProps> = ({ id, title, tagsList }) => {
+  const dispatch = useDispatch();
   const onInfoBtnClick = () => {};
 
   const onEditBtnClick = () => {};
 
-  const onDeleteBtnClick = () => {};
+  const onDeleteBtnClick = () => {
+    dispatch(deleteNote(id));
+  };
 
   const formattedTitle = useMemo(() => {
     const formattedText = title.split(/\s?#/g).join(' #');

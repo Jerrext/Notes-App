@@ -1,12 +1,18 @@
 import { all, takeLatest, put, call } from 'redux-saga/effects';
 import {
   CreateNoteActionType,
+  DeleteNoteActionType,
   NoteType,
   NotesActionTypes,
   NotesListType,
 } from '../types/notesTypes';
 import axios, { AxiosResponse } from 'axios';
-import { addNote, setIsLoading, setNotesList } from '../actions/notesActions';
+import {
+  addNoteInList,
+  removeNoteFromList,
+  setIsLoading,
+  setNotesList,
+} from '../actions/notesActions';
 import API from '../api';
 
 function* getNotesListWorker() {
@@ -30,8 +36,21 @@ function* createNoteWorker(action: CreateNoteActionType) {
       API.createNoteRequest,
       data,
     );
-    yield put(addNote(responseData));
+    yield put(addNoteInList(responseData));
     callback();
+    yield put(setIsLoading(false));
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.warn(error.message);
+    }
+  }
+}
+
+function* deleteNoteWorker(action: DeleteNoteActionType) {
+  try {
+    yield put(setIsLoading(true));
+    yield call(API.deleteNoteRequest, action.payload);
+    yield put(removeNoteFromList(action.payload));
     yield put(setIsLoading(false));
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -44,5 +63,6 @@ export default function* notesSaga() {
   yield all([
     takeLatest(NotesActionTypes.GET_NOTES_LIST, getNotesListWorker),
     takeLatest(NotesActionTypes.CREATE_NOTE, createNoteWorker),
+    takeLatest(NotesActionTypes.DELETE_NOTE, deleteNoteWorker),
   ]);
 }

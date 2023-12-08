@@ -2,10 +2,12 @@ import {
   AddNoteActionType,
   CreateNoteActionType,
   CreateNotePayloadData,
+  DeleteNoteActionType,
   GetNotesListActionType,
   NoteType,
   NotesActionTypes,
   NotesListType,
+  RemoveNoteFromListActionType,
   SetIsLoadingActionType,
   SetNotesListActionType,
 } from '../types/notesTypes';
@@ -29,7 +31,17 @@ export const createNote = (payload: CreateNotePayloadData): CreateNoteActionType
   payload,
 });
 
-export const addNote = (payload: NoteType): AddNoteActionType => ({
-  type: NotesActionTypes.ADD_NOTE,
+export const addNoteInList = (payload: NoteType): AddNoteActionType => ({
+  type: NotesActionTypes.ADD_NOTE_IN_LIST,
+  payload,
+});
+
+export const deleteNote = (payload: number): DeleteNoteActionType => ({
+  type: NotesActionTypes.DELETE_NOTE,
+  payload,
+});
+
+export const removeNoteFromList = (payload: number): RemoveNoteFromListActionType => ({
+  type: NotesActionTypes.REMOVE_NOTE_FROM_LIST,
   payload,
 });

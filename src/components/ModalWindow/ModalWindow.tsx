@@ -58,6 +58,9 @@ const ModalWindow: FC<ModalWindowProps> = ({ modalWindowType, isOpen, setIsOpen 
       aria-describedby="alert-dialog-description">
       <DialogTitle id="alert-dialog-title">Создание заметки</DialogTitle>
       <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          Что бы добавить тег, воспользуйтесь "#".
+        </DialogContentText>
         <Field
           title="Заметка"
           value={noteTitle}

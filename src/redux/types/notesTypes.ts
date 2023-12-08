@@ -4,7 +4,9 @@ export enum NotesActionTypes {
   SET_NOTES_LIST = 'SET_NOTES_LIST',
   GET_TAGS_LIST = 'GET_TAGS_LIST',
   CREATE_NOTE = 'CREATE_NOTE',
-  ADD_NOTE = 'ADD_NOTE',
+  ADD_NOTE_IN_LIST = 'ADD_NOTE_IN_LIST',
+  DELETE_NOTE = 'DELETE_NOTE',
+  REMOVE_NOTE_FROM_LIST = 'REMOVE_NOTE_FROM_LIST',
 }
 
 export type PayloadWithCallback<Data> = {
@@ -65,8 +67,18 @@ export type CreateNoteActionType = {
 };
 
 export type AddNoteActionType = {
-  type: NotesActionTypes.ADD_NOTE;
+  type: NotesActionTypes.ADD_NOTE_IN_LIST;
   payload: NoteType;
+};
+
+export type DeleteNoteActionType = {
+  type: NotesActionTypes.DELETE_NOTE;
+  payload: number;
+};
+
+export type RemoveNoteFromListActionType = {
+  type: NotesActionTypes.REMOVE_NOTE_FROM_LIST;
+  payload: number;
 };
 
 //
@@ -74,4 +86,5 @@ export type AddNoteActionType = {
 export type NotesActionType =
   | SetIsLoadingActionType
   | SetNotesListActionType
-  | AddNoteActionType;
+  | AddNoteActionType
+  | RemoveNoteFromListActionType;

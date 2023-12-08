@@ -13,4 +13,8 @@ const createNoteRequest = (data: CreateNoteData) => {
   return apiAxios.post('/notes', data);
 };
 
-export default { getNotesListRequest, createNoteRequest };
+const deleteNoteRequest = (id: number) => {
+  return apiAxios.delete(`/notes/${id}`);
+};
+
+export default { getNotesListRequest, createNoteRequest, deleteNoteRequest };
