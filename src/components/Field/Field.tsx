@@ -31,6 +31,7 @@ const Field: FC<FieldProps> = ({
       const formattedTags = [...new Set(tags)].map((tag, index) => ({
         id: index + tag + Math.random(),
         title: tag.slice(1),
+        selected: false,
       }));
 
       setTags(formattedTags);

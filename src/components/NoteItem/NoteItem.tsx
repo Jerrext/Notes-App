@@ -9,26 +9,25 @@ import {
   Box,
   Grid,
   TextField,
+  Tooltip,
 } from '@material-ui/core';
 import ButtonComponent from '../ButtonComponent';
 import { ButtonTypes } from 'src/utils/@globalTypes';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
-import { NoteType, TagsListType } from 'src/redux/types/notesTypes';
+import { NoteType, TagType, TagsListType } from 'src/redux/types/notesTypes';
 import { TEST_TAG_REG } from 'src/utils/constants';
 import { deleteNote, setCurrentNote } from 'src/redux/actions/notesActions';
-import ModalWindow from '../ModalWindow';
 
 type NoteItemProps = {
   noteData: NoteType;
   setIsOpenWindow: (value: boolean) => void;
+  selectedTags: string[];
 };
 
-const NoteItem: FC<NoteItemProps> = ({ noteData, setIsOpenWindow }) => {
+const NoteItem: FC<NoteItemProps> = ({ noteData, setIsOpenWindow, selectedTags }) => {
   const dispatch = useDispatch();
-
-  // const [isOpen, setIsOpen] = useState(false);
 
   const onEditBtnClick = () => {
     setIsOpenWindow(true);
@@ -50,7 +49,9 @@ const NoteItem: FC<NoteItemProps> = ({ noteData, setIsOpenWindow }) => {
               <span
                 style={{
                   color: 'red',
-                  backgroundColor: false ? 'rgba(217, 49, 30, 0.12)' : '',
+                  backgroundColor: selectedTags.includes(str.slice(1))
+                    ? 'rgba(217, 49, 30, 0.12)'
+                    : '',
                   padding: '2px',
                   borderRadius: '3px',
                 }}>
@@ -62,7 +63,7 @@ const NoteItem: FC<NoteItemProps> = ({ noteData, setIsOpenWindow }) => {
           ),
         )
       : [];
-  }, [noteData]);
+  }, [noteData, selectedTags]);
 
   useEffect(() => {
     // console.log(formattedTitle);
@@ -87,6 +88,7 @@ const NoteItem: FC<NoteItemProps> = ({ noteData, setIsOpenWindow }) => {
               type={ButtonTypes.PRIMARY}
               title={<EditIcon />}
               onClick={onEditBtnClick}
+              tooltip="Редактировать"
             />
           </Grid>
           <Grid item>
@@ -94,6 +96,7 @@ const NoteItem: FC<NoteItemProps> = ({ noteData, setIsOpenWindow }) => {
               type={ButtonTypes.SECONDARY}
               title={<DeleteIcon />}
               onClick={onDeleteBtnClick}
+              tooltip="Удалить"
             />
           </Grid>
         </Grid>
@@ -105,7 +108,14 @@ const NoteItem: FC<NoteItemProps> = ({ noteData, setIsOpenWindow }) => {
           <Box
             style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', padding: '20px' }}>
             {noteData.tags.map((tag) => {
-              return <Chip key={tag.id} label={tag.title} size="small" color="default" />;
+              return (
+                <Chip
+                  key={tag.id}
+                  label={tag.title}
+                  size="small"
+                  color={tag.selected ? 'secondary' : 'default'}
+                />
+              );
             })}
           </Box>
         </>

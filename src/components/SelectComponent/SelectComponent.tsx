@@ -59,16 +59,22 @@ const SelectComponent: FC<SelectComponentProps> = ({
               flexWrap: 'wrap',
             }}>
             {(selected as string[]).map((option) => (
-              <Chip key={option} label={option} />
+              <Chip key={option} label={option} size="small" />
             ))}
           </div>
         )}>
-        {optionsList.map((option) => (
-          <MenuItem key={option} value={option}>
-            <Checkbox checked={value.indexOf(option) > -1} />
-            <ListItemText primary={option} />
+        {optionsList.length > 0 ? (
+          optionsList.map((option) => (
+            <MenuItem key={option} value={option}>
+              <Checkbox checked={value.indexOf(option) > -1} />
+              <ListItemText primary={option} />
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem disabled value="">
+            <em>Список тегов пуст</em>
           </MenuItem>
-        ))}
+        )}
       </Select>
     </FormControl>
   );

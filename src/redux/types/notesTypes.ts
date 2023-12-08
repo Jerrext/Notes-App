@@ -10,6 +10,8 @@ export enum NotesActionTypes {
   SET_CURRENT_NOTE = 'SET_CURRENT_NOTE',
   UPDATE_NOTE = 'UPDATE_NOTE',
   UPDATE_NOTES_LIST = 'UPDATE_NOTES_LIST',
+  SET_FILTERED_NOTES_LIST = 'SET_FILTERED_NOTES_LIST',
+  SET_IS_SEARCHED = 'SET_IS_SEARCHED',
 }
 
 export type PayloadWithCallback<Data> = {
@@ -30,6 +32,7 @@ export type NotesListType = NoteType[];
 export type TagType = {
   id: string;
   title: string;
+  selected: boolean;
 };
 
 export type TagsListType = TagType[];
@@ -45,10 +48,17 @@ export type CreateNotePayloadData = PayloadWithCallback<CreateNoteData>;
 
 export type UpdateNotePayloadData = PayloadWithCallback<NoteType>;
 
+export type searchData = {
+  query: string;
+  selectedTags: string[];
+};
+
 //
 
 export type NotesState = {
   notesList: NotesListType;
+  searchedNotesList: NotesListType;
+  isSearched: boolean;
   isLoading: boolean;
   currentNote: NoteType | null;
 };
@@ -104,6 +114,16 @@ export type UpdateNotesListActionType = {
   payload: NoteType;
 };
 
+export type SetSelectedTagsListActionType = {
+  type: NotesActionTypes.SET_FILTERED_NOTES_LIST;
+  payload: searchData;
+};
+
+export type SetIsSearchedActionType = {
+  type: NotesActionTypes.SET_IS_SEARCHED;
+  payload: boolean;
+};
+
 //
 
 export type NotesActionType =
@@ -112,4 +132,6 @@ export type NotesActionType =
   | AddNoteActionType
   | RemoveNoteFromListActionType
   | SetCurrentNoteActionType
-  | UpdateNotesListActionType;
+  | UpdateNotesListActionType
+  | SetSelectedTagsListActionType
+  | SetIsSearchedActionType;

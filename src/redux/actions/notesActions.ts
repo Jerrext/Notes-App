@@ -10,10 +10,13 @@ import {
   RemoveNoteFromListActionType,
   SetCurrentNoteActionType,
   SetIsLoadingActionType,
+  SetIsSearchedActionType,
   SetNotesListActionType,
+  SetSelectedTagsListActionType,
   UpdateNoteActionType,
   UpdateNotePayloadData,
   UpdateNotesListActionType,
+  searchData,
 } from '../types/notesTypes';
 
 export const getNotesList = (): GetNotesListActionType => ({
@@ -62,5 +65,17 @@ export const updateNote = (payload: UpdateNotePayloadData): UpdateNoteActionType
 
 export const updateNotesList = (payload: NoteType): UpdateNotesListActionType => ({
   type: NotesActionTypes.UPDATE_NOTES_LIST,
+  payload,
+});
+
+export const setFilteredNotesList = (
+  payload: searchData,
+): SetSelectedTagsListActionType => ({
+  type: NotesActionTypes.SET_FILTERED_NOTES_LIST,
+  payload,
+});
+
+export const setIsSearched = (payload: boolean): SetIsSearchedActionType => ({
+  type: NotesActionTypes.SET_IS_SEARCHED,
   payload,
 });

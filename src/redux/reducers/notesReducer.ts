@@ -2,6 +2,8 @@ import { NotesActionType, NotesActionTypes, NotesState } from '../types/notesTyp
 
 const initialState: NotesState = {
   notesList: [],
+  searchedNotesList: [],
+  isSearched: false,
   isLoading: false,
   currentNote: null,
 };
@@ -31,6 +33,41 @@ export const notesReducer = (
           item.id === payload.id ? payload : item,
         ),
       };
+    case NotesActionTypes.SET_FILTERED_NOTES_LIST:
+      const queryIsEmpty = payload.query.length === 0;
+      const selectedTagsIsEmpty = payload.selectedTags.length === 0;
+
+      return {
+        ...state,
+        searchedNotesList: state.notesList
+          .map((note) => {
+            return {
+              ...note,
+              tags: note.tags.map((tag) =>
+                payload.selectedTags.includes(tag.title)
+                  ? { ...tag, selected: true }
+                  : { ...tag, selected: false },
+              ),
+            };
+          })
+          .filter((note) => {
+            const isTagsMatches =
+              note.tags.filter((tag) => tag.selected === true).length ===
+              payload.selectedTags.length;
+
+            const isQueryMatches = new RegExp(payload.query).test(note.title);
+
+            if (!queryIsEmpty && selectedTagsIsEmpty) {
+              return isQueryMatches;
+            } else if (queryIsEmpty && !selectedTagsIsEmpty) {
+              return isTagsMatches;
+            } else {
+              return isTagsMatches && isQueryMatches;
+            }
+          }),
+      };
+    case NotesActionTypes.SET_IS_SEARCHED:
+      return { ...state, isSearched: payload };
     default:
       return state;
   }

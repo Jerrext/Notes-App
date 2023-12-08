@@ -8,6 +8,8 @@ import {
   DialogActions,
   Grid,
   Chip,
+  CircularProgress,
+  Box,
 } from '@material-ui/core';
 import ButtonComponent from '../ButtonComponent';
 import { ButtonTypes } from 'src/utils/@globalTypes';
@@ -18,8 +20,8 @@ import { createNote, setCurrentNote, updateNote } from 'src/redux/actions/notesA
 type ModalWindowProps = {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  // isEditWindow?: boolean;
   noteData: NoteType | null;
+  isLoading: boolean;
 };
 
 const ModalWindow: FC<ModalWindowProps> = ({
@@ -27,6 +29,7 @@ const ModalWindow: FC<ModalWindowProps> = ({
   isOpen,
   setIsOpen,
   noteData,
+  isLoading,
 }) => {
   const dispatch = useDispatch();
 
@@ -96,37 +99,54 @@ const ModalWindow: FC<ModalWindowProps> = ({
       <DialogTitle id="alert-dialog-title">
         {noteData ? 'Редактирование заметки' : 'Создание заметки'}
       </DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          Что бы добавить тег, воспользуйтесь символом "#".
-        </DialogContentText>
-        <Field
-          title="Заметка"
-          value={value}
-          onChange={setValue}
-          textarea
-          setTags={setTagsList}
-        />
-        <Grid container spacing={1} style={{ marginTop: '5px' }}>
-          {tagsList.map((tag) => (
-            <Grid item key={tag.id}>
-              <Chip label={tag.title} size="small" color="secondary" />
+      {!isLoading ? (
+        <>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Что бы добавить тег, воспользуйтесь символом "#".
+            </DialogContentText>
+            <Field
+              title="Заметка"
+              value={value}
+              onChange={setValue}
+              textarea
+              setTags={setTagsList}
+            />
+            <Grid container spacing={1} style={{ marginTop: '5px' }}>
+              {tagsList.map((tag) => (
+                <Grid item key={tag.id}>
+                  <Chip label={tag.title} size="small" color="secondary" />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      </DialogContent>
-      <DialogActions>
-        <ButtonComponent
-          title={noteData ? 'Сохранить' : 'Создать'}
-          type={ButtonTypes.PRIMARY}
-          onClick={noteData ? onSaveBtnClick : onCreateBtnClick}
-        />
-        <ButtonComponent
-          title="Закрыть"
-          type={ButtonTypes.DEFAULT}
-          onClick={onCloseBtnClick}
-        />
-      </DialogActions>
+          </DialogContent>
+
+          <DialogActions>
+            <ButtonComponent
+              title={noteData ? 'Сохранить' : 'Создать'}
+              type={ButtonTypes.PRIMARY}
+              onClick={noteData ? onSaveBtnClick : onCreateBtnClick}
+              tooltip=""
+            />
+            <ButtonComponent
+              title="Закрыть"
+              type={ButtonTypes.DEFAULT}
+              onClick={onCloseBtnClick}
+              tooltip=""
+            />
+          </DialogActions>
+        </>
+      ) : (
+        <Box
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '250px',
+          }}>
+          <CircularProgress />
+        </Box>
+      )}
     </Dialog>
   );
 };

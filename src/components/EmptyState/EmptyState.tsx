@@ -9,7 +9,12 @@ type EmptyStateProps = {
 
 const EmptyState: FC<EmptyStateProps> = ({ title, description }) => {
   return (
-    <Grid container spacing={1} alignItems="center" style={{ flexDirection: 'column' }}>
+    <Grid
+      container
+      spacing={1}
+      alignItems="center"
+      justifyContent="center"
+      style={{ flexDirection: 'column', flex: '1' }}>
       <Grid item>
         <NoContentIcon />
       </Grid>
