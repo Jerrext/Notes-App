@@ -15,7 +15,7 @@ import ButtonComponent from '../ButtonComponent';
 import { ButtonTypes } from 'src/utils/@globalTypes';
 import Field from '../Field';
 import { NoteType, TagsListType } from 'src/redux/types/notesTypes';
-import { createNote, setCurrentNote, updateNote } from 'src/redux/actions/notesActions';
+import { createNote, updateNote } from 'src/redux/actions/notesActions';
 
 type ModalWindowProps = {
   isOpen: boolean;
@@ -25,7 +25,6 @@ type ModalWindowProps = {
 };
 
 const ModalWindow: FC<ModalWindowProps> = ({
-  // isEditWindow,
   isOpen,
   setIsOpen,
   noteData,
@@ -35,17 +34,6 @@ const ModalWindow: FC<ModalWindowProps> = ({
 
   const [value, setValue] = useState('');
   const [tagsList, setTagsList] = useState<TagsListType>([]);
-
-  // const [defaultValue, setDefaultValue] = useState('');
-
-  // const modalWindowData = () => {
-  //   switch (modalWindowType) {
-  //     case ModalWindowTypes.CREATE_NOTE:
-  //       return { title: 'Создание заметки' };
-  //     default:
-  //       return;
-  //   }
-  // };
 
   const onCreateBtnClick = () => {
     value.length > 0 &&

@@ -1,5 +1,5 @@
 import React, { FC, ChangeEvent } from 'react';
-import { TextField, Select, Input } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import { TagsListType } from 'src/redux/types/notesTypes';
 import { FIND_TAGS_REG } from 'src/utils/constants';
 

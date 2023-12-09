@@ -1,22 +1,11 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import reactStringReplace from 'react-string-replace';
-import {
-  Paper,
-  Typography,
-  Divider,
-  Chip,
-  Box,
-  Grid,
-  TextField,
-  Tooltip,
-} from '@material-ui/core';
+import { Paper, Typography, Divider, Chip, Box, Grid } from '@material-ui/core';
 import ButtonComponent from '../ButtonComponent';
 import { ButtonTypes } from 'src/utils/@globalTypes';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import InfoIcon from '@material-ui/icons/Info';
-import { NoteType, TagType, TagsListType } from 'src/redux/types/notesTypes';
+import { NoteType } from 'src/redux/types/notesTypes';
 import { TEST_TAG_REG } from 'src/utils/constants';
 import { deleteNote, setCurrentNote } from 'src/redux/actions/notesActions';
 
@@ -64,10 +53,6 @@ const NoteItem: FC<NoteItemProps> = ({ noteData, setIsOpenWindow, selectedTags }
         )
       : [];
   }, [noteData, selectedTags]);
-
-  useEffect(() => {
-    // console.log(formattedTitle);
-  }, [formattedTitle]);
 
   return (
     <Paper elevation={3} style={{ width: '100%' }}>

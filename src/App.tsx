@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import './App.css';
-import {
-  Grid,
-  Container,
-  Typography,
-  Paper,
-  CircularProgress,
-  Box,
-  Backdrop,
-} from '@material-ui/core';
+import { Grid, Container, Typography, Paper, CircularProgress } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import { ButtonTypes } from './utils/@globalTypes';
 import Field from './components/Field';
@@ -146,7 +137,6 @@ const App = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          // justifyContent: 'start',
           gap: '20px',
           padding: '20px',
           flex: '1',

@@ -23,7 +23,6 @@ const MenuProps = {
     style: {
       maxHeight: 400,
       width: 250,
-      // top: 200,
     },
   },
 };
@@ -39,6 +38,7 @@ const SelectComponent: FC<SelectComponentProps> = ({
   const onSelectChange = (e: ChangeEvent<{ value: unknown }>) => {
     onChange(e.target.value as string[]);
   };
+
   return (
     <FormControl variant="outlined" fullWidth>
       <InputLabel id={labelId}>{title}</InputLabel>
